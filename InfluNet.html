@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<head>
+    <title>InfluNetPhilosopher</title>
+
+    <meta name="description" content="Influence network of philosophers">
+    <meta name="author" content="Junyi Tao">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+    <!-- css -->
+    <link rel='stylesheet' href='css/graph.css'>
+    <link rel='stylesheet' href='css/style.css'>
+    <link rel='stylesheet' href='css/switch.css'>
+    <link rel='stylesheet' href='css/search.css'>
+    <link rel='stylesheet' href='css/info.css'>
+    <!-- js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <!-- data -->
+    <script src="js/graph_gender_group.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/d3-graph.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+
+    
+
+</head>
+
+<body>
+
+<!-- D3 graph -->
+<div id="d3_selectable_force_directed_graph">
+    <svg/>
+</div>
+
+<!-- "Clip to timeline" switch -->
+<div class="switch-container-timeline">
+  <label class="switch">
+    <input id="clipToTimelineCheckbox" type="checkbox" checked  onclick="onClickClipToTimeline()">
+    <span class="slider round">
+    </span>
+  </label>
+  <p>Timeline</p>
+</div>
+
+
+
+<!-- highlight women philosopher -->
+<!-- call the fucntion: highlightWomenPhilosopher(); -->
+<div class="switch-container-womenphilosopher">
+    <label class="switch">
+      <input id="onClickHighlightWomen" type="checkbox" unchecked onclick="onClickHighlightWomen()">
+      <span class="slider round">
+      </span>
+    </label>
+    <p>highlightWomenPhilosopher</p>
+  </div>
+
+
+<!-- search -->
+<div class="search-container">
+    <input id="search" type="search" placeholder="Search" onkeyup="searchByName()">
+</div>
+
+<!-- Help & About -->
+<div class="help-container">
+    <div class="help-tip" style="font-size: 18px; color: #065e87; font-weight: 600; font-family: 'Times New Roman', Times, serif;">
+        <div>
+            <p id="legendHeader">Representation</p>
+            <!-- node -->
+            <p>
+                Node - Philosopher 
+                <br>Node Size - overall influence (pagerank score)
+                <br>Node Color:
+            </p>
+            <div class="legend-row">
+                <div id="regular-node" class="node-symbol"></div>
+                <p>Regular Node</p>
+            </div>
+            <div class="legend-row">
+                <div id="selected-node" class="node-symbol"></div>
+                <p>Selected Node</p>
+            </div>
+            <div class="legend-row">
+                <div id="search-match-node" class="node-symbol"></div>
+                <p>Node matched by search</p>
+            </div>
+            <div class="legend-row">
+                <div id="highlight-node" class="node-symbol"></div>
+                <p>Female Philosophers</p>
+            </div>
+
+            <!-- link -->
+            <p>
+                Link - influence or be influenced
+                <br>Linke Color:
+            </p>
+            <div class="legend-row">
+                <div id="regular-link" class="link-symbol"></div>
+                <p>Regular Link</p>
+            </div>
+            <div class="legend-row">
+                <div id="influences-link" class="link-symbol"></div>
+                <p>Influenced by selected node</p>
+            </div>
+            <div class="legend-row">
+                <div id="influenced-by-link" class="link-symbol"></div>
+                <p>Influence on the selected node</p>
+            </div>
+            
+            <p id="legendHeader">Interactions</p>
+            <p>
+                1. Zoom and Dragon
+                <br>2. Search, select, access more info
+                <br>3. Clip to timeline - missing history
+                <br>4. Highlight women philosophers
+            </p>
+        </div>
+    </div>
+    
+    <a href="index.html" style="font-size: 18px; color: #065e87; font-weight: 600; font-family: 'Times New Roman', Times, serif;">HOME</a>
+</div>
+
+
+<!-- info card -->
+<div id="bottom_sheet" class="modal bottom-sheet modal-fixed-footer">
+    <div id="modalContent" class="modal-content">
+        <!-- <img id="philosopherImg"> -->
+        <div id="philosopherBio">
+            <a id="philosopherName" target="_blank"></a>
+            <p id="philosopherDescription"></p>
+        </div>
+    </div>
+    <!-- close the info card -->
+    <!-- reference: 
+            https://www.freetimelearning.com/materialize-css/materialize-css-buttons.php
+            https://www.freetimelearning.com/materialize-css/materialize-css-icons.php -->
+    <div class="modal-footer">
+        
+        <a id="closeButton" class="btn-floating btn-small btn-flat modal-action modal-close">
+            <!-- the icon -->
+            <i class="material-icons white-text tiny">close</i>
+            <!-- close -->
+        </a>
+    </div>
+</div>
+
+<script>
+    $('.modal').modal({
+            dismissible: false,
+            preventScrolling: false,
+            opacity: .0,
+            inDuration: 500,
+            outDuration: 200,
+            startingTop: '50%',
+            endingTop: '50%'
+        }
+    );
+</script>
+
+<!-- Graph initialization -->
+<script>
+    initGraph(graph)
+    var graphContainer = document.getElementById("d3_selectable_force_directed_graph")
+    createD3Graph(graph, graphContainer.clientWidth, graphContainer.clientHeight);
+</script>
+
+
+
+
+
+
+
+
+
+
+</body>
